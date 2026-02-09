@@ -99,25 +99,33 @@ exports.sendOTP = async (req, res) => {
     // save OTP to DB (FAST)
     await OTP.create({ email, otp })
 
-    // respond immediately (BEST UX)
-    res.status(200).json({
-      success: true,
-      message: "OTP sent successfully",
-    })
-
-    // send email in background (NON-BLOCKING)
-    setImmediate(async () => {
-      try {
-        await mailSender(
-          email,
-          "Verification Email from StudyNotion",
-          otpTemplate(otp)
-        )
-        console.log("OTP email sent to", email)
-      } catch (error) {
-        console.error("OTP email failed:", error)
-      }
-    })
+    // Send email and wait for it to complete
+    // This ensures we catch errors and can log them properly
+    try {
+      await mailSender(
+        email,
+        "Verification Email from StudyNotion",
+        otpTemplate(otp)
+      )
+      console.log("OTP email sent successfully to", email)
+      
+      // respond after email is sent successfully
+      return res.status(200).json({
+        success: true,
+        message: "OTP sent successfully",
+      })
+    } catch (emailError) {
+      console.error("Failed to send OTP email:", emailError.message)
+      console.error("Full email error:", emailError)
+      
+      // Still return success to user (OTP is saved in DB)
+      // But log the error for debugging
+      return res.status(200).json({
+        success: true,
+        message: "OTP generated successfully. Please check your email.",
+        warning: "Email delivery may be delayed. Please check spam folder or try again."
+      })
+    }
 
   } catch (error) {
     return res.status(500).json({
