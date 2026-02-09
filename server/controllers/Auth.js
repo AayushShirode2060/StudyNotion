@@ -9,61 +9,124 @@ const mailSender = require("../utils/mailSender");
 
 require("dotenv").config()
 //sendOtp
-exports.sendOTP=async(req,res)=>{
-    try{
-        const {email}=req.body;
+// exports.sendOTP=async(req,res)=>{
+//     try{
+//         const {email}=req.body;
 
-    const existingUser=await User.findOne({email})
+//     const existingUser=await User.findOne({email})
 
-    if(existingUser){
-        return res.status(401).json({
-            success:false,
-            message:"User already exists"
-        })
-    }
+//     if(existingUser){
+//         return res.status(401).json({
+//             success:false,
+//             message:"User already exists"
+//         })
+//     }
     
-    var otp=otpGenerator.generate(6,{
-        upperCaseAlphabets:false,
-        lowerCaseAlphabets:false,
-        specialChars:false
-    })
+//     var otp=otpGenerator.generate(6,{
+//         upperCaseAlphabets:false,
+//         lowerCaseAlphabets:false,
+//         specialChars:false
+//     })
 
 
-    const result=await OTP.findOne({otp:otp})
+//     const result=await OTP.findOne({otp:otp})
    
-    while(result){
-        otp=otpGenerator.generate(6,{
-        upperCaseAlphabets:false,
-        lowerCaseAlphabets:false,
-        specialChars:false
-        })
+//     while(result){
+//         otp=otpGenerator.generate(6,{
+//         upperCaseAlphabets:false,
+//         lowerCaseAlphabets:false,
+//         specialChars:false
+//         })
 
-     result=await OTP.findOne({otp:otp})
+//      result=await OTP.findOne({otp:otp})
 
-    }
-    //create an entry for otp
-    const otpPayload={email,otp}
-    const otpBody=await OTP.create(otpPayload)
+//     }
+//     //create an entry for otp
+//     const otpPayload={email,otp}
+//     const otpBody=await OTP.create(otpPayload)
 
   
 
-    //return response succesfful
-    res.status(200).json({
-        success:true,
-        message:"Otp Sent successfully",
-        otp
-    })
+//     //return response succesfful
+//     res.status(200).json({
+//         success:true,
+//         message:"Otp Sent successfully",
+//         otp
+//     })
     
 
-    }catch(error){
-        return res.status(500).json({
-            success:false,
-            message:error.message 
-        })
+//     }catch(error){
+//         return res.status(500).json({
+//             success:false,
+//             message:error.message 
+//         })
+//     }
+    
+    
+// }
+
+
+
+
+const otpTemplate = require("../mail/templates/emailVerificationTemplate")
+
+exports.sendOTP = async (req, res) => {
+  try {
+    const { email } = req.body
+
+    // check if user already exists
+    const existingUser = await User.findOne({ email })
+    if (existingUser) {
+      return res.status(401).json({
+        success: false,
+        message: "User already exists",
+      })
     }
-    
-    
+
+    // generate unique OTP
+    let otp
+    let existingOtp
+
+    do {
+      otp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        lowerCaseAlphabets: false,
+        specialChars: false,
+      })
+      existingOtp = await OTP.findOne({ otp })
+    } while (existingOtp)
+
+    // save OTP to DB (FAST)
+    await OTP.create({ email, otp })
+
+    // respond immediately (BEST UX)
+    res.status(200).json({
+      success: true,
+      message: "OTP sent successfully",
+    })
+
+    // send email in background (NON-BLOCKING)
+    setImmediate(async () => {
+      try {
+        await mailSender(
+          email,
+          "Verification Email from StudyNotion",
+          otpTemplate(otp)
+        )
+        console.log("OTP email sent to", email)
+      } catch (error) {
+        console.error("OTP email failed:", error)
+      }
+    })
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
 }
+
 //signUp
 exports.signUp=async(req,res)=>{
     console.log('SIGNUP REQ.BODY:', req.body)
