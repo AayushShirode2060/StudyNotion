@@ -55,7 +55,7 @@ app.use(
 )
 
 // 👇 THIS LINE IS CRITICAL (preflight fix)
-app.options("*", cors())
+app.options(/.*/, cors())
 
 app.use(
     fileUpload({
