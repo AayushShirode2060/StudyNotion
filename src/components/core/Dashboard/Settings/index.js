@@ -1,16 +1,10 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import IconBtn from "../../../common/IconBtn"
-import { FaRegEdit } from "react-icons/fa";
 import EditProfile from './EditProfile';
 import UpdatePassword from './UpdatePassword';
 import DeleteAccount from './DeleteAccount';
 import ChangeProfilePicture from './ChangeProfilePicture';
 
 const Settings = () => {
-  const {user}=useSelector((state)=>state.profile)
-  const navigate=useNavigate()
   return (
     <div>
       <h1 className="text-richblack-5 font-medium text-2xl sm:text-3xl p-2 sm:p-4">

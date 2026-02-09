@@ -27,7 +27,7 @@ const SubSectionModal = ({
       setValue("lectureDesc",modalData.description)
       setValue("lectureVideo",modalData.videoUrl)
     }
-  },[])
+  },[view, edit, modalData, setValue])
 
   
   const isFormUpdated=()=>{

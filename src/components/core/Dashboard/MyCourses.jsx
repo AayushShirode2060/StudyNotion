@@ -18,7 +18,7 @@ const MyCourses = () => {
             }
         }
         fetchCourses()
-    },[])
+    },[token])
   return (
     <div className='text-white'>
       <div className='flex justify-between'>

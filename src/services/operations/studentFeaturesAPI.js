@@ -1,6 +1,5 @@
 import toast from "react-hot-toast";
 import { studentEndpoints } from "../apis";
-import { CgPathCrop } from "react-icons/cg";
 import { apiConnector } from "../apiconnector";
 // import Error from "../../pages/Error";
 import rzpLogo from "../../assets/Logo/rzp_logo.png"

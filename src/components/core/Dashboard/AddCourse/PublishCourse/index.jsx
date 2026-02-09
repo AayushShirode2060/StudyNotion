@@ -17,8 +17,7 @@ export default function  PublishCourse  ()  {
       if(course?.status===COURSE_STATUS.PUBLISHED){
         setValue("public",true)
       }
-    },[])
-
+    },[course?.status, setValue])
     const goToCourses=()=>{
         dispatch(resetCourseState())
         // navigate('/dashboard/my-courses')
@@ -26,7 +25,7 @@ export default function  PublishCourse  ()  {
 
     const handleCoursePublish=async()=>{
 
-        if(course?.status===COURSE_STATUS.PUBLISHED && getValues("public")===true || (course?.status===COURSE_STATUS.DRAFT && getValues("public")===false)){
+        if((course?.status===COURSE_STATUS.PUBLISHED && getValues("public")) || (course?.status===COURSE_STATUS.DRAFT && !getValues("public"))){
             //no form updation
             //no need to make api call
             goToCourses()

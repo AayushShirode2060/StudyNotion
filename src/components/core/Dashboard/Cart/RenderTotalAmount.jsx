@@ -25,10 +25,10 @@ const RenderTotalAmount = () => {
           setConfirmationModal({
             text1:"you are not Logged in",
             text2:"Please login to purchase the course",
-            btn2text:"Login",
+            btn1text:"Login",
             btn2text:"Cancel",
             btn1Handler:()=>navigate("/login"),
-            btn2Handler:setConfirmationModal(null)
+            btn2Handler:()=>setConfirmationModal(null)
           })
     }
     

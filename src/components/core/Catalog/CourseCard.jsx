@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import GetAvgRating from '../../../utils/avgRating'
 import RatingStars from '../../common/RatingStars'
-// import User from '../../../../server/models/User'
-const Course_card = ({course,Height}) => {
+
+const CourseCard = ({course,Height}) => {
     const [avgReviewCount,setAvgReviewCount]=useState(0)
-    const [instructorName,setInstructorName]=useState("")
 
     useEffect(()=>{
         const count=GetAvgRating(course.ratingAndReviews)
@@ -39,4 +38,4 @@ const Course_card = ({course,Height}) => {
   )
 }
 
-export default Course_card
+export default CourseCard

@@ -8,7 +8,7 @@ export default function CourseAccordionBar({course,isActive,handleActive}) {
     const [active,setActive]=useState(false)
     useEffect(()=>{
         setActive(isActive?.includes(course._id))
-    },[isActive])
+    },[isActive, course._id])
 
     useEffect(()=>{
         setSectionHeight(active?contentE1.current.scrollHeight:0)

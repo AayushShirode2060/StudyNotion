@@ -12,7 +12,6 @@ import { ratingsEndpoints } from '../../services/apis'
 import { FaStar } from 'react-icons/fa'
 const ReviewSlider = () => {
     const [reviews,setReviews]=useState([]);
-    const truncateWords=15
 
     useEffect(()=>{
         const fetchAllReviews=async()=>{
@@ -27,7 +26,7 @@ const ReviewSlider = () => {
            console.log("Printing Reviews",reviews)
         }
         fetchAllReviews()
-    },[])
+    },[reviews])
   return (
     <div className='text-white py-7'>
         

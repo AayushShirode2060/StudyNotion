@@ -7,8 +7,6 @@ import { ACCOUNT_TYPE } from '../../../utils/constants'
 import { addToCart } from '../../../slices/cartSlice'
 import { FiShare2 } from 'react-icons/fi'
 import { BiCheckCircle } from 'react-icons/bi'
-import { AiOutlineShoppingCart } from 'react-icons/ai'
-import { IoRocketSharp } from 'react-icons/io5'
 
 function CourseDetailsCard ({course,setConfirmationModal,handleBuyCourse}) {
   const {thumbnail:ThumbnailImage,price:CurrentPrice,}=course

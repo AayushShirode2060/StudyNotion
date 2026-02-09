@@ -24,8 +24,7 @@ export default function EditCourse  () {
         }
 
         populateCourseDetails()
-    },[])
-
+    },[courseId, dispatch, token])
     if(loading){
         return(
             <div>

@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { apiConnector } from '../../services/apiconnector'
-import { contactusEndpoint } from '../../services/apis'
+
 import CountryCode from "../../data/countrycode.json"
 
 const ContactUsForm = () => {
-
-    const [loading, setLoading] = useState(false)
     const {
         register,
         handleSubmit,
@@ -17,14 +14,11 @@ const ContactUsForm = () => {
     const submitContactForm=async(data)=>{
       console.log("Logging data",data)
       try{
-        setLoading(true)
         // const response=await apiConnector("POST",contactusEndpoint.CONTACT_US_API,data)
         const response={status:"OK"}
         console.log("Logging Response ",response)
-        setLoading(false)
       }catch(error){
         console.log("Error:",error.message)
-        setLoading(false)
       }
     }
 

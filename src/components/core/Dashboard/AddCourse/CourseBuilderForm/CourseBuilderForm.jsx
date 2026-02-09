@@ -22,10 +22,8 @@ const CourseBuilderForm = () => {
     dispatch(setEditCourse(true))
    }
 
-   const [loading,setLoading]=useState(false)
    const {token}=useSelector((state)=>state.auth)
    const onSubmit=async (data)=>{
-     setLoading(true);
      let result;
 
      if(editSectionName){
@@ -47,8 +45,6 @@ const CourseBuilderForm = () => {
       setEditSectionname(null)
       setValue("sectionName","")
      }
-
-     setLoading(false)
    }
 
 

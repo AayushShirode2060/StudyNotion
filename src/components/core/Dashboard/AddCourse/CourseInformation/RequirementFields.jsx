@@ -10,12 +10,12 @@ const RequirementFields = ({name,label,register,errors,setValue,getValues}) => {
         required:true,
         // validate:(value)=>value.length>0
     })
-  },[])
+  },[name, register])
 
   useEffect(()=>{
     setValue(name,requirementsList);
 
-  },[requirementsList])
+  },[name, requirementsList, setValue])
 
   const handleAddRequirement=()=>{
      console.log("This is clicked")

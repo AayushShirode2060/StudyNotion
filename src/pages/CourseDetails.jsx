@@ -11,8 +11,7 @@ import RatingStars from "../components/common/RatingStars"
 import { formatDate } from '../services/formatDate';
 import CourseDetailsCard from '../components/core/Course/CourseDetailsCard';
 import CourseAccordionBar from '../components/core/Course/CourseAccordionBar';
-import { FiCalendar, FiGlobe, FiUsers, FiMessageCircle } from 'react-icons/fi';
-import { IoStar } from 'react-icons/io5';
+import { FiCalendar, FiGlobe, FiUsers } from 'react-icons/fi';
 const CourseDetails = () => {
     const {user}=useSelector((state)=>state.profile)
     const {token}=useSelector((state)=>state.auth)
@@ -20,7 +19,6 @@ const CourseDetails = () => {
     const navigate=useNavigate()
     const {courseId}=useParams();
     const {loading}=useSelector((state)=>state.profile)
-    const {paymentLoading}=useSelector((state)=>state.course)
    
     const [courseData,setCourseData]=useState(null)
     const [confirmationModal,setConfirmationModal]=useState(null)
@@ -33,7 +31,7 @@ const CourseDetails = () => {
       setIsActive(
         !isActive.includes(id)
         ? isActive.concat([id])
-        :isActive.filter((e)=>e!=id)
+        :isActive.filter((e)=>e!==id)
       )
     }
 
@@ -83,16 +81,17 @@ const CourseDetails = () => {
         }
 
         setConfirmationModal({
-          text1:"you are not Logged in",
+          text1:"You are not Logged in",
           text2:"Please login to purchase the course",
-          btn2text:"Login",
+          btn1text:"Login",
           btn2text:"Cancel",
           btn1Handler:()=>navigate("/login"),
-          btn2Handler:setConfirmationModal(null)
+          btn2Handler:()=>setConfirmationModal(null)
         })
     }
 
-     function duration(){
+     useEffect(()=>{
+      if(courseData){
         const time=courseData?.data[0]?.courseContent[0]?.subSection.reduce((acc,curr)=>{
           acc+=curr.timeDuration ||0
           console.log("this is acc",acc,)
@@ -102,10 +101,7 @@ const CourseDetails = () => {
         console.log("this is time",time)
 
         setTimeDuration(Math.round(time))
-    }
-
-    useEffect(()=>{
-      duration()
+      }
     },[courseData])
 
     console.log("this si time duration",timeDuration)
@@ -127,7 +123,7 @@ const CourseDetails = () => {
       )
     }
 
-    const {_id:course_id,courseName,courseDescription,thumbnail,price,whatYouWillLearn,courseContent,ratingAndReviews,instructor,studentsEnrolled,createdAt}=courseData.data[0]
+    const {courseName,courseDescription,whatYouWillLearn,courseContent,ratingAndReviews,instructor,studentsEnrolled,createdAt}=courseData.data[0]
   return (
     <>
     <div className='flex flex-col text-white min-h-screen bg-richblack-900'>
@@ -284,7 +280,7 @@ const CourseDetails = () => {
           <img 
             className='w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-yellow-50 shadow-lg' 
             src={courseData.data[0]?.instructor.image} 
-            alt="instructor image" 
+            alt="instructor" 
           />
           <div className='flex flex-col gap-2 flex-1'>
             <h3 className='text-xl md:text-2xl font-bold text-white'>
