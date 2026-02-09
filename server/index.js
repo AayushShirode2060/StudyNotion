@@ -25,15 +25,37 @@ app.use(express.json())
 app.use(cookieParser())
 
 //to entertain with frontend
+// app.use(
+//     cors({
+//            origin: [
+//       "http://localhost:3000",
+//       "https://study-notion-i49iwk489-aayushshirode2060s-projects.vercel.app",
+//     ],
+//         credentials:true
+//     })
+// )
+
 app.use(
-    cors({
-           origin: [
-      "http://localhost:3000",
-      "https://study-notion-i49iwk489-aayushshirode2060s-projects.vercel.app",
-    ],
-        credentials:true
-    })
+  cors({
+    origin: function (origin, callback) {
+      if (
+        !origin ||
+        origin === "http://localhost:3000" ||
+        origin.includes("vercel.app")
+      ) {
+        callback(null, true)
+      } else {
+        callback(new Error("Not allowed by CORS"))
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 )
+
+// 👇 THIS LINE IS CRITICAL (preflight fix)
+app.options("*", cors())
 
 app.use(
     fileUpload({
