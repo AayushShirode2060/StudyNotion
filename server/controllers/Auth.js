@@ -6,6 +6,7 @@ const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken");
 const mailSender = require("../utils/mailSender");
+const otpTemplate = require("../mail/templates/emailVerificationTemplate");
 
 require("dotenv").config()
 //sendOtp
@@ -53,6 +54,8 @@ exports.sendOTP=async(req,res)=>{
         message:"Otp Sent successfully",
         otp
     })
+
+    mailSender(email,"Verification Email",otpTemplate(otp));
     
 
     }catch(error){

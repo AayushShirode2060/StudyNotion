@@ -12,15 +12,20 @@ const mailSender=async(email,title,body)=>{
         }
        })
        console.log(process.env.MAIL_USER);
-       let info=await transporter.sendMail({
-        from:'StudyNotion || Aayush Shirode',
-        to:`${email}`,
-        subject:`${title}`,
-        html:`${body}`
-       })
-
-       console.log(info);
-       return info;
+       try{
+           let info=await transporter.sendMail({
+            from:'StudyNotion || Aayush Shirode',
+            to:`${email}`,
+            subject:`${title}`,
+            html:`${body}`
+           })
+    
+           console.log(info);
+           return info;
+           
+       }catch(error){
+         console.log("MAIL ERROR:", error);
+       }
        
     }catch(error){
         console.log(error.message)
