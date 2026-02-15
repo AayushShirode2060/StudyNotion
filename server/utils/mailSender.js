@@ -4,7 +4,8 @@ const mailSender=async(email,title,body)=>{
     try{
         console.log(process.env.MAIL_USER);
        let transporter=nodemailer.createTransport({
-        host:process.env.MAIL_HOST,
+        // host:process.env.MAIL_HOST,
+        service:"gmail",
         auth:{
             user:process.env.MAIL_USER,
             pass:process.env.MAIL_PASSWORD
