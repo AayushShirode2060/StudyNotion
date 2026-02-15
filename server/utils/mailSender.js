@@ -2,6 +2,7 @@ const nodemailer=require("nodemailer")
 
 const mailSender=async(email,title,body)=>{
     try{
+        console.log(process.env.MAIL_USER);
        let transporter=nodemailer.createTransport({
         host:process.env.MAIL_HOST,
         auth:{
@@ -9,7 +10,7 @@ const mailSender=async(email,title,body)=>{
             pass:process.env.MAIL_PASSWORD
         }
        })
-
+       console.log(process.env.MAIL_USER);
        let info=await transporter.sendMail({
         from:'StudyNotion || Aayush Shirode',
         to:`${email}`,
